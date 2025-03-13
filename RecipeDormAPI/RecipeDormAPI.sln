@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeDormAPI", "RecipeDormAPI.csproj", "{E868A7FB-4ACB-4DF5-8DC9-CBAFF17808D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8CB99EF2-D7FF-43F8-A21D-615BFCB22B10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeDormAPI.Infrastructure", "..\RecipeDormAPI.Infrastructure\RecipeDormAPI.Infrastructure.csproj", "{D4038033-1DC9-49EF-9374-4AC5E2E3B849}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E868A7FB-4ACB-4DF5-8DC9-CBAFF17808D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E868A7FB-4ACB-4DF5-8DC9-CBAFF17808D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E868A7FB-4ACB-4DF5-8DC9-CBAFF17808D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E868A7FB-4ACB-4DF5-8DC9-CBAFF17808D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4038033-1DC9-49EF-9374-4AC5E2E3B849}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4038033-1DC9-49EF-9374-4AC5E2E3B849}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4038033-1DC9-49EF-9374-4AC5E2E3B849}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4038033-1DC9-49EF-9374-4AC5E2E3B849}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E868A7FB-4ACB-4DF5-8DC9-CBAFF17808D5} = {8CB99EF2-D7FF-43F8-A21D-615BFCB22B10}
+		{D4038033-1DC9-49EF-9374-4AC5E2E3B849} = {8CB99EF2-D7FF-43F8-A21D-615BFCB22B10}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A8D83738-692E-47A7-80AE-96EF09D6720F}
+	EndGlobalSection
+EndGlobal
