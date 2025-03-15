@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RecipeAPI.Infrastructure.Data.Entities
 {
-    public class Likes
+    public class Likes : BaseEntity
     {
         [ForeignKey(nameof(User))]
         public Guid UserId { get; set; }

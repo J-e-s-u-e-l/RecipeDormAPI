@@ -14,4 +14,11 @@ namespace RecipeAPI.Infrastructure.Data.Entities
         public DateTimeOffset TimeCreated { get; set; } = DateTimeOffset.UtcNow;
         public DateTimeOffset TimeUpdated { get; set; } = DateTimeOffset.UtcNow;
     }
+
+    public class JwtSettings
+    {
+        public string Secret { get; set; }
+        public int ExpiryMinutes { get; set; }
+        public string Issuer { get; set; }
+    }
 }
