@@ -13,6 +13,7 @@ namespace RecipeDormAPI.Infrastructure.Config
         public string RegistrationSuccessfully { get; set; }
         public string UserWithEmailNotFound { get; set; }
         public string AccountLocked { get; set; }
-        public string SingInSuccessful { get; set; }
+        public string SignInSuccessful { get; set; }
+        public string ExternalLoginError { get; set; }
     }
 }

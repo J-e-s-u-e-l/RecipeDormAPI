@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.Extensions.Configuration;
@@ -22,13 +24,33 @@ namespace RecipeDormAPI.Infrastructure.Infrastructure.Persistence
                     builder.AllowAnyOrigin();
                     builder.AllowAnyMethod();
                     builder.AllowAnyHeader();
-                    builder.AllowCredentials();
-                    builder.WithOrigins(origins);
+                    /*builder.AllowCredentials();
+                    builder.WithOrigins(origins);*/
                 });
             });
             
             return services;
         }
+
+        public static IServiceCollection AddGoogleAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                //options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddGoogle(options =>
+            {
+                options.ClientId = configuration["Google:ClientId"];
+                options.ClientSecret = configuration["Google:ClientSecret"];
+                options.CallbackPath = "/auth/google-callback";
+            });
+            
+            return services;
+        }
+
 
         public static IServiceCollection RegisterPersistence(this IServiceCollection services, IConfiguration configuration)
         {

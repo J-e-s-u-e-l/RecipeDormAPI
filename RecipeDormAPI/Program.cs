@@ -28,6 +28,7 @@ namespace RecipeDormAPI
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddFluentValidationAutoValidation();
             builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            builder.Services.AddGoogleAuthentication(builder.Configuration);
 
 
 
@@ -117,6 +118,12 @@ namespace RecipeDormAPI
                 x.SwaggerEndpoint("/swagger/v1/swagger.json", "RecipeDorm API v1");
                 x.RoutePrefix = string.Empty;
             });
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
 
             app.UseHttpsRedirection();
             app.UseCors("MyCorsPolicy");

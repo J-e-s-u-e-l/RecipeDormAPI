@@ -18,7 +18,6 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
         private readonly ILogger<LoginRequestHandler> _logger;
         private readonly IJwtHandler _jwtHandler;
         private readonly AppSettings _appSettings;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public LoginRequestHandler(DataDbContext dbContext, UserManager<Users> userManager, ILogger<LoginRequestHandler> logger, IJwtHandler jwtHandler, IOptions<AppSettings> appSettings, IHttpContextAccessor httpContextAccessor)
         {
@@ -27,7 +26,6 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
             _logger = logger;
             _jwtHandler = jwtHandler;
             _appSettings = appSettings.Value;
-            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<BaseResponse<LoginResponse>> Handle(LoginRequest request, CancellationToken cancellationToken)
         {
@@ -99,7 +97,7 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
 
                     _httpContextAccessor.HttpContext.Response.Cookies.Append("authToken", loginResponse.Token, cookieOptions);*/
 
-                    return new BaseResponse<LoginResponse>(true, $"{_appSettings.SingInSuccessful}", loginResponse);
+                    return new BaseResponse<LoginResponse>(true, $"{_appSettings.SignInSuccessful}", loginResponse);
                 }
                 catch (Exception ex)
                 {
