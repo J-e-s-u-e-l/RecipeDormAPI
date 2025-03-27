@@ -12,7 +12,7 @@ namespace RecipeAPI.Infrastructure.Data.Entities
         [ForeignKey(nameof(User))]
         public Guid UserId { get; set; }
         public string Title { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
         // Navigation properties
         public Users User { get; set; }

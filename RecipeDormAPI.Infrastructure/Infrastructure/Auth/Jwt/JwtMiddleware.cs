@@ -32,13 +32,19 @@ namespace RecipeDormAPI.Infrastructure.Infrastructure.Auth.Jwt
         {
             try
             {
+               /* context.Request.EnableBuffering(); // Allow reading request body multiple times
+
+                using var reader = new StreamReader(context.Request.Body, Encoding.UTF8, leaveOpen: true);
+                var body = await reader.ReadToEndAsync();
+                _logger.LogInformation("Incoming Request: {RequestBody}", body);
+*/
                 var token = context.Request.Cookies["authToken"];
 
                 if (token != null)
                     await attachUserToContext(context, token);
                 else
                 {
-                    token = context.Request.Query["access_token"];
+                    token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
                     if (token != null)
                         await attachUserToContext(context, token);
                 }

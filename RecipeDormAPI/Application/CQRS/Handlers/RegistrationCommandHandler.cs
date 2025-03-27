@@ -13,10 +13,10 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
     {
         private readonly DataDbContext _dbContext;
         private UserManager<Users> _userManager;
-        private readonly ILogger<RegistrationCommand> _logger;
+        private readonly ILogger<RegistrationCommandHandler> _logger;
         private readonly AppSettings _appSettings;
 
-        public RegistrationCommandHandler(DataDbContext dbContext, UserManager<Users> userManager, ILogger<RegistrationCommand> logger, IOptions<AppSettings> appSettings)
+        public RegistrationCommandHandler(DataDbContext dbContext, UserManager<Users> userManager, ILogger<RegistrationCommandHandler> logger, IOptions<AppSettings> appSettings)
         {
             _dbContext = dbContext;
             _userManager = userManager;

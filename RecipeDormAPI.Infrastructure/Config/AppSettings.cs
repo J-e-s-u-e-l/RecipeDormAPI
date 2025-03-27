@@ -15,5 +15,6 @@ namespace RecipeDormAPI.Infrastructure.Config
         public string AccountLocked { get; set; }
         public string SignInSuccessful { get; set; }
         public string ExternalLoginError { get; set; }
+        public string HomePage { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace RecipeDormAPI
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +29,7 @@ namespace RecipeDormAPI
             builder.Services.AddFluentValidationAutoValidation();
             builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             builder.Services.AddGoogleAuthentication(builder.Configuration);
+            builder.Services.RegisterApplication();
 
 
 

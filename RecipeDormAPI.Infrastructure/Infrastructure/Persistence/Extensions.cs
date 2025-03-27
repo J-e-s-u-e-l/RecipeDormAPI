@@ -7,11 +7,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RecipeAPI.Infrastructure.Data.Entities;
 using RecipeDormAPI.Infrastructure.Config;
+using RecipeDormAPI.Infrastructure.Infrastructure.Services.Implementations;
+using RecipeDormAPI.Infrastructure.Infrastructure.Services.Interfaces;
 
 namespace RecipeDormAPI.Infrastructure.Infrastructure.Persistence
 {
     public static class Extensions
     {
+        public static IServiceCollection RegisterApplication(this IServiceCollection services)
+        {
+            services.AddScoped<IFileService, FileService>();
+            return services;
+        }
+
         public static IServiceCollection RegisterCors(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddCors(options =>
