@@ -99,7 +99,67 @@ namespace RecipeDormAPI.Controllers
                 var modelxfmed = new GetRecipeByIdRequest { RecipeId = request.RecipeId };
                 var req = JsonConvert.SerializeObject(modelxfmed);
 
-                _logger.LogInformation($"User attempt to GET RECIPE by ID");
+                _logger.LogInformation($"User attempt to GET RECIPE by ID\n{req}");
+                var response = await _mediator.Send(request);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong\n {ex.StackTrace}: {ex.Message}");
+                return StatusCode(500, $"{_appSettings.ProcessingError}");
+            }
+        }
+
+        [HttpPost("bookmark-recipe")]
+        public async Task<IActionResult> SaveRecipeToBookmark(BookmarkRecipeCommand request)
+        {
+            try
+            {
+                var modelxfmed = new BookmarkRecipeCommand { RecipeId = request.RecipeId };
+                var req = JsonConvert.SerializeObject(modelxfmed);
+
+                _logger.LogInformation($"User attempt to SAVE RECIPE to BOOKMARK\n{req}");
+                var response = await _mediator.Send(request);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong\n {ex.StackTrace}: {ex.Message}");
+                return StatusCode(500, $"{_appSettings.ProcessingError}");
+            }
+        }
+
+        [HttpDelete("remove-bookmark")]
+        public async Task<IActionResult> UnbookmarkRecipe([FromQuery]UnbookmarkRecipeCommand request)
+        {
+            try
+            {
+                var modelxfmed = new UnbookmarkRecipeCommand { RecipeId = request.RecipeId };
+                var req = JsonConvert.SerializeObject(modelxfmed);
+
+                _logger.LogInformation($"User attempt to UNBOOKMARK RECIPE\n{req}");
+                var response = await _mediator.Send(request);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong\n {ex.StackTrace}: {ex.Message}");
+                return StatusCode(500, $"{_appSettings.ProcessingError}");
+            }
+        }
+
+        [HttpGet("get-my-bookmarked-recipes")]
+        public async Task<IActionResult> GetMyBookmarkedRecipes([FromQuery]GetMyBookmarkedRecipesRequest request)
+        {
+            try
+            {
+                var modelxfmed = new GetMyBookmarkedRecipesRequest { PageNumber = request.PageNumber };
+                var req = JsonConvert.SerializeObject(modelxfmed);
+
+                _logger.LogInformation($"User attempted to fetch their bookmarked recipes\n{req}");
                 var response = await _mediator.Send(request);
 
                 return Ok(response);

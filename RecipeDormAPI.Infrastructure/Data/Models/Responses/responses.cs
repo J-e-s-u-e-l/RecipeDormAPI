@@ -34,7 +34,7 @@ namespace RecipeDormAPI.Infrastructure.Data.Models.Responses
 
     public class SearchForRecipeResponse
     {
-        public List<RecipeSearchResultDto> Data { get; set; }
+        public List<RecipeDto> Data { get; set; }
         public PaginationMetaData Pagination { get; set; }
     }
 
@@ -56,11 +56,14 @@ namespace RecipeDormAPI.Infrastructure.Data.Models.Responses
 
     public class GetRecipeByIdResponse
     {
-        public Guid RecipeId { get; set; }
-        public string Title { get; set; }
-        public string ImageUrl { get; set; }
-        public string Description { get; set; }
+        public RecipeDto RecipeDetails { get; set; }
         public List<IngredientsDto> Ingredients { get; set; }
         public List<StepsDto> Steps { get; set; }
+    }
+
+    public class GetMyBookmarkedRecipesResponse
+    {
+        public List<RecipeDto> Recipes { get; set; }
+        public PaginationMetaData Pagination { get; set; }
     }
 }

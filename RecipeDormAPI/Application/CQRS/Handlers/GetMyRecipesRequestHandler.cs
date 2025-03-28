@@ -59,7 +59,10 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
                                 RecipeId = r.RecipeId,
                                 Title = r.Title,
                                 ImageUrl = r.ImageUrl,
-                                Description = r.Description
+                                Description = r.Description,
+                                IsLikedByUser = _dbContext.Likes.Any(l => l.RecipeId == r.RecipeId && l.UserId == userId),
+                                LikesCount = _dbContext.Likes.Count(l => l.RecipeId == r.RecipeId),
+                                IsBookmarkedByUser = _dbContext.Bookmarks.Any(b => b.RecipeId == r.RecipeId && b.UserId == userId),
                             })
                             .ToList();
 

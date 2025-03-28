@@ -8,14 +8,6 @@ using System.Threading.Tasks;
 
 namespace RecipeDormAPI.Infrastructure.Data.Models.DTOs
 {
-    public class RecipeSearchResultDto
-    {
-        public Guid Id { get; set; }
-        public string Title { get; set; }
-        public string ImageUrl { get; set; }
-        public string Relevance { get; set; }
-    }
-
     public class PaginationMetaData
     {
         public int CurrentPage { get; set; }
@@ -39,7 +31,11 @@ namespace RecipeDormAPI.Infrastructure.Data.Models.DTOs
     {
         public Guid RecipeId { get; set; }
         public string Title { get; set; }
-        public string ImageUrl { get; set; }
-        public string Description { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? Description { get; set; }
+        public bool? IsLikedByUser { get; set; }
+        public int? LikesCount { get; set; }
+        public bool? IsBookmarkedByUser { get; set; }
+        public string? Relevance { get; set; }
     }
 }

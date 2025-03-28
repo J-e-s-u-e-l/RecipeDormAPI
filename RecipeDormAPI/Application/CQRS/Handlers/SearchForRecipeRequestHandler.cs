@@ -16,19 +16,27 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
         private readonly DataDbContext _dbContext;
         private readonly ILogger<SearchForRecipeRequestHandler> _logger;
         private readonly AppSettings _appSettings;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private const int PageSize = 20;
 
-        public SearchForRecipeRequestHandler(DataDbContext dbContext, ILogger<SearchForRecipeRequestHandler> logger, IOptions<AppSettings> appSettings)
+        public SearchForRecipeRequestHandler(DataDbContext dbContext, ILogger<SearchForRecipeRequestHandler> logger, IOptions<AppSettings> appSettings, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _logger = logger;
             _appSettings = appSettings.Value;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<BaseResponse<SearchForRecipeResponse>> Handle(SearchForRecipeRequest request, CancellationToken cancellationToken)
         {
             try
             {
+                if (_httpContextAccessor.HttpContext?.Items["UserId"] is not Guid userId)
+                {
+                    _logger.LogError("UserId not found in HttpContext");
+                    return new BaseResponse<SearchForRecipeResponse>(false, "User authentication required");
+                }
+
                 // Search Process
                 // Input Processing
                 string normalizedQuery = request.SearchQuery.ToLower().Trim();
@@ -106,12 +114,16 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
                 var paginatedResults = rankedResults
                     .Skip(skip)
                     .Take(PageSize)
-                    .Select(r => new RecipeSearchResultDto
+                    .Select(r => new RecipeDto
                     {
-                        Id = r.Recipe.Id,
+                        RecipeId = r.Recipe.Id,
                         Title = r.Recipe.Title,
-                        ImageUrl = r.Recipe.ImageUrl,
-                        Relevance = r.Relevance
+                        ImageUrl = r.Recipe?.ImageUrl ?? "",
+                        Relevance = r.Relevance,
+                        Description = r.Recipe?.Description ?? "",
+                        IsLikedByUser = r.Recipe.Likes.Any(l => l.UserId == userId),
+                        LikesCount = r.Recipe.Likes.Count,
+                        IsBookmarkedByUser = r.Recipe.Bookmarks.Any(b => b.UserId == userId)
                     })
                     .ToList();
 

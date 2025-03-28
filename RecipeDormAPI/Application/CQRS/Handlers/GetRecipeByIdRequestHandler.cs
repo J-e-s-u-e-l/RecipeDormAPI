@@ -39,10 +39,16 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
                     .Where(r => r.Id == request.RecipeId)
                     .Select(r => new GetRecipeByIdResponse
                     {
-                        RecipeId = r.Id,
-                        Title = r.Title,
-                        ImageUrl = r.ImageUrl,
-                        Description = r.Description,
+                        RecipeDetails = new RecipeDto
+                        {
+                            RecipeId = r.Id,
+                            Title = r.Title,
+                            ImageUrl = r.ImageUrl,
+                            Description = r.Description,
+                            IsLikedByUser = r.Likes.Any(l => l.UserId == userId),
+                            LikesCount = r.Likes.Count,
+                            IsBookmarkedByUser = r.Bookmarks.Any(b => b.UserId == userId)
+                        },
                         Ingredients = r.Ingredients.Select(i => new IngredientsDto { Name = i.Name, Quantity = i.Quantity }).ToList(),
                         Steps = r.Steps.Select(i => new StepsDto { StepNumber = i.StepNumber, Description= i.Description}).OrderBy(x => x.StepNumber).ToList()
                     })

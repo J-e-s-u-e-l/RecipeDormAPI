@@ -35,8 +35,6 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
                 return new BaseResponse<AddNewRecipeResponse>(false, "User authentication required");
             }
 
-            //var userId = (Guid)_httpContextAccessor.HttpContext!.Items["UserId"];
-
             await using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
 
             try

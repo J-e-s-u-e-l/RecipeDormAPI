@@ -18,9 +18,9 @@ namespace RecipeAPI.Infrastructure.Data.Entities
 
         // Navigation properties
         public Users User { get; set; }
-        public List<Ingredients> Ingredients { get; set; }
-        public List<Steps> Steps { get; set; }
-        public List<Likes> Likes { get; set; }
-        public List<Bookmarks> Bookmarks { get; set; }
+        public List<Ingredients> Ingredients { get; set; } = new List<Ingredients>();
+        public List<Steps> Steps { get; set; } = new List<Steps>();
+        public List<Likes> Likes { get; set; } = new List<Likes>();
+        public List<Bookmarks> Bookmarks { get; set; } = new List<Bookmarks>();
     }
 }
