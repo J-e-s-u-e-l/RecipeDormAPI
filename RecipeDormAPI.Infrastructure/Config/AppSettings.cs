@@ -16,5 +16,6 @@ namespace RecipeDormAPI.Infrastructure.Config
         public string SignInSuccessful { get; set; }
         public string ExternalLoginError { get; set; }
         public string HomePage { get; set; }
+        public string SpoonacularApiKey { get; set; }
     }
 }

@@ -15,6 +15,7 @@ namespace RecipeDormAPI.Application.CQRS.Queries
         public SearchForRecipeRequestValidator()
         {
             RuleFor(x => x.SearchQuery).NotEmpty().NotNull().WithMessage("Search query is required");
+            RuleFor(x => x.page).GreaterThan(0).WithMessage("Page number must be greater than 0");
         }
     }
 }

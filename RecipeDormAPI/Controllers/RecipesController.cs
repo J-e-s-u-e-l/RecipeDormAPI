@@ -32,7 +32,7 @@ namespace RecipeDormAPI.Controllers
 
 
         [HttpGet("search")]
-        public async Task<IActionResult> SearchForRecipes([FromBody]SearchForRecipeRequest request)
+        public async Task<IActionResult> SearchForRecipes([FromQuery]SearchForRecipeRequest request)
         {
             try
             {
@@ -52,28 +52,14 @@ namespace RecipeDormAPI.Controllers
         }
 
         [HttpPost("add-new-recipe")]
-        //[Consumes("multipart/form-data")]
         public async Task<IActionResult> AddNewRecipe([FromForm]AddNewRecipeCommand request)
-        //public async Task<IActionResult> AddNewRecipe([FromForm] string title, [FromForm] string ingredients, [FromForm] string steps, [FromForm] IFormFile? image)
         {
             try
             {
-                // Deserialize the ingredients and steps from the request
-                /*var ingredientsList = JsonSerializer.Deserialize<List<IngredientsDto>>(ingredients);
-                var stepsList = JsonSerializer.Deserialize<List<StepsDto>>(steps);
+                var modelxfmed = new AddNewRecipeCommand { Title = request.Title, IngredientsJson = request.IngredientsJson, StepsJson = request.StepsJson, Image = request.Image };
+                var req = JsonConvert.SerializeObject(modelxfmed);
 
-                var request = new AddNewRecipeCommand 
-                {
-                    Title = title, 
-                    Ingredients = ingredientsList, 
-                    Steps = stepsList, 
-                    Image = image 
-                };*/
-
-                /*var modelxfmed = new AddNewRecipeCommand { Title = request.Title, Ingredients = request.Ingredients, Steps = request.Steps, Image = request.Image };
-                var req = JsonConvert.SerializeObject(modelxfmed);*/
-
-                //_logger.LogInformation($"User attempt to ADD NEW RECIPE\n{req}");
+                _logger.LogInformation($"User attempt to ADD NEW RECIPE\n{req}");
                 var response = await _mediator.Send(request);
 
                 return Ok(response);
@@ -85,5 +71,44 @@ namespace RecipeDormAPI.Controllers
             }
         }
 
+        [HttpGet("get-my-recipes")]
+        public async Task<IActionResult> GetMyRecipes([FromQuery]GetMyRecipesRequest request)
+        {
+            try
+            {
+                var modelxfmed = new GetMyRecipesRequest { page = request.page };
+                var req = JsonConvert.SerializeObject(modelxfmed);
+
+                _logger.LogInformation($"User attempt to GET ALL personally created RECIPES");
+                var response = await _mediator.Send(request);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong\n {ex.StackTrace}: {ex.Message}");
+                return StatusCode(500, $"{_appSettings.ProcessingError}");
+            }
+        }
+
+        [HttpGet("get-recipe-by-id")]
+        public async Task<IActionResult> GetRecipeById([FromQuery]GetRecipeByIdRequest request)
+        {
+            try
+            {
+                var modelxfmed = new GetRecipeByIdRequest { RecipeId = request.RecipeId };
+                var req = JsonConvert.SerializeObject(modelxfmed);
+
+                _logger.LogInformation($"User attempt to GET RECIPE by ID");
+                var response = await _mediator.Send(request);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong\n {ex.StackTrace}: {ex.Message}");
+                return StatusCode(500, $"{_appSettings.ProcessingError}");
+            }
+        }
     }
 }

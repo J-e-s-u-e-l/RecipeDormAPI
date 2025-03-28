@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using RecipeAPI.Infrastructure.Data.Entities;
+using RecipeDormAPI.Infrastructure.Config;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace RecipeDormAPI.Infrastructure.Infrastructure.Persistence
+namespace RecipeDormAPI.Infrastructure.Infrastructure.Persistence.Utilities.SeedRecipes
 {
     public class SpoonaCularRecipe
     {
@@ -64,10 +66,17 @@ namespace RecipeDormAPI.Infrastructure.Infrastructure.Persistence
     public class SeedRecipes
     {
         static readonly HttpClient client = new HttpClient();
-        static readonly string apiKey = "3562fe3dc7f5437f8ef26ab037107bb5";
+        /*private readonly AppSettings _appSettings;
+
+        public SeedRecipes(IOptions<AppSettings> appSettings)
+        {
+            _appSettings = appSettings.Value;
+        }*/
+
+        //static readonly string apiKey = "3562fe3dc7f5437f8ef26ab037107bb5";
         static readonly Guid dummyUserId = Guid.Parse("F15FEAD6-B847-4FA3-F7EE-08DD648C3C24");
 
-        public static async Task Initialize(IServiceProvider serviceProvider, int numberOfRecipes)
+        public static async Task Initialize(IServiceProvider serviceProvider, int numberOfRecipes, AppSettings appSettings)
         {
             using var scope = serviceProvider.CreateScope();
             var _dataDbContext = scope.ServiceProvider.GetRequiredService<DataDbContext>();
@@ -76,7 +85,7 @@ namespace RecipeDormAPI.Infrastructure.Infrastructure.Persistence
 
             try
             {
-                string url = $"https://api.spoonacular.com/recipes/random?number={numberOfRecipes}&apiKey={apiKey}";
+                string url = $"https://api.spoonacular.com/recipes/random?number={numberOfRecipes}&apiKey={appSettings.SpoonacularApiKey}";
                 var response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();

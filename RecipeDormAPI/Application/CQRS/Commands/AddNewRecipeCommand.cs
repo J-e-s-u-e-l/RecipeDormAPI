@@ -14,6 +14,8 @@ namespace RecipeDormAPI.Application.CQRS.Commands
         public string Title { get; set; }
         [FromForm]
         public IFormFile? Image { get; set; }
+        [FromForm]
+        public string? Description { get; set; }
         [FromForm(Name = "ingredients")]
         /*public List<IngredientsDto> Ingredients { get; set; }
         [FromForm(Name = "steps")]
@@ -88,6 +90,10 @@ namespace RecipeDormAPI.Application.CQRS.Commands
                                 .NotEmpty().WithMessage("Ingredient quantity is required");
                         });
                     });
+
+                // Description validation
+                RuleFor(x => x.Description)
+                    .MaximumLength(200).WithMessage("Description must not exceed 500 characters");
             }
 
             private bool IsValidImageType(IFormFile file)

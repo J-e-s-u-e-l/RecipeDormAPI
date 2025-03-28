@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using RecipeAPI.Infrastructure.Data.Entities;
 using RecipeDormAPI.Application.CQRS.Queries;
 using RecipeDormAPI.Infrastructure.Config;
+using RecipeDormAPI.Infrastructure.Data.Models.DTOs;
 using RecipeDormAPI.Infrastructure.Data.Models.Responses;
 using RecipeDormAPI.Infrastructure.Infrastructure.Auth.Jwt;
 using RecipeDormAPI.Infrastructure.Infrastructure.Persistence;
@@ -28,13 +29,7 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
         {
             try
             {
-                if (request.page < 1)
-                {
-                    request.page = 1;
-                }
-
                 // Search Process
-
                 // Input Processing
                 string normalizedQuery = request.SearchQuery.ToLower().Trim();
                 var queryWords = normalizedQuery.Split(' ', StringSplitOptions.RemoveEmptyEntries)

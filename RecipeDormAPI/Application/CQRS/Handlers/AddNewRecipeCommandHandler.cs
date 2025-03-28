@@ -29,7 +29,6 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
 
         public async Task<BaseResponse<AddNewRecipeResponse>> Handle(AddNewRecipeCommand request, CancellationToken cancellationToken)
         {
-
             if (_httpContextAccessor.HttpContext?.Items["UserId"] is not Guid userId)
             {
                 _logger.LogError("UserId not found in HttpContext");
@@ -49,6 +48,7 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
                     UserId = userId,
                     Title = request.Title,
                     ImageUrl = (request.Image != null) ? await _fileService.SaveImageAsync(request.Image) : null,
+                    Description = request.Description,
                     Ingredients = request.Ingredients.Select(i => new Ingredients
                     {
                         RecipeId = Guid.Empty,
@@ -76,6 +76,7 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
                     RecipeId = newRecipe.Id,
                     Title = newRecipe.Title,
                     ImageUrl = newRecipe.ImageUrl,
+                    Description = newRecipe.Description,
                     Ingredients = request.Ingredients,
                     Steps = request.Steps
                 };

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeDormAPI.Infrastructure.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using RecipeDormAPI.Infrastructure.Infrastructure.Persistence;
 namespace RecipeDormAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(DataDbContext))]
-    partial class DataDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250327222215_ModifiedRecipes_AddedColumn_Description")]
+    partial class ModifiedRecipes_AddedColumn_Description
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -248,9 +251,6 @@ namespace RecipeDormAPI.Infrastructure.Migrations
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SpoonacularId")
-                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("TimeCreated")
                         .HasColumnType("datetimeoffset");

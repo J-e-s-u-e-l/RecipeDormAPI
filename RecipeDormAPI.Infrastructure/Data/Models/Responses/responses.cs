@@ -38,28 +38,29 @@ namespace RecipeDormAPI.Infrastructure.Data.Models.Responses
         public PaginationMetaData Pagination { get; set; }
     }
 
-    public class RecipeSearchResultDto
-    {
-        public Guid Id { get; set;}
-        public string Title { get; set;}
-        public string ImageUrl { get; set;}
-        public string Relevance { get; set;}
-    }
-
-    public class PaginationMetaData
-    {
-        public int CurrentPage { get; set; }
-        public int TotalItems { get; set; }
-        public bool HasNext { get; set; }
-        public bool HasPrevious{ get; set; }
-    }
-
     public class AddNewRecipeResponse
     {
         public Guid RecipeId { get; set; }
         public string Title { get; set;}
         public string ImageUrl { get; set;}
+        public string Description { get; set;}
         public List<IngredientsDto> Ingredients { get; set;}
         public List<StepsDto> Steps { get; set;}
     }   
+
+    public class GetMyRecipesResponse
+    {
+        public List<RecipeDto> Recipes { get; set; }
+        public PaginationMetaData Pagination { get; set; }
+    }
+
+    public class GetRecipeByIdResponse
+    {
+        public Guid RecipeId { get; set; }
+        public string Title { get; set; }
+        public string ImageUrl { get; set; }
+        public string Description { get; set; }
+        public List<IngredientsDto> Ingredients { get; set; }
+        public List<StepsDto> Steps { get; set; }
+    }
 }

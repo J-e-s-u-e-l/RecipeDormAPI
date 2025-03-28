@@ -13,6 +13,8 @@ namespace RecipeAPI.Infrastructure.Data.Entities
         public Guid UserId { get; set; }
         public string Title { get; set; }
         public string? ImageUrl { get; set; }
+        public string? Description { get; set; }
+        public int? SpoonacularId { get; set; }
 
         // Navigation properties
         public Users User { get; set; }

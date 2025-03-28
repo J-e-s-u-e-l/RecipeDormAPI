@@ -8,6 +8,9 @@ using RecipeDormAPI.Infrastructure.Infrastructure.Auth.Jwt;
 using Microsoft.AspNetCore.Mvc;
 using RecipeDormAPI.Infrastructure.Data.Models.Responses;
 using Microsoft.OpenApi.Models;
+using RecipeDormAPI.Infrastructure.Infrastructure.Persistence.Utilities.SeedRecipes;
+using RecipeDormAPI.Infrastructure.Config;
+using Microsoft.Extensions.Options;
 
 namespace RecipeDormAPI
 {
@@ -31,6 +34,10 @@ namespace RecipeDormAPI
             builder.Services.AddGoogleAuthentication(builder.Configuration);
             builder.Services.RegisterApplication();
 
+
+            // Seed recipes, load app settings
+            /*var appSettings = builder.Configuration.GetSection("AppSettings").Get<AppSettings>();
+            builder.Services.AddScoped<SeedRecipes_AddDescToAllRecipes>();*/
 
 
             builder.Services.AddLogging(options =>
@@ -105,6 +112,13 @@ namespace RecipeDormAPI
             });
 
             var app = builder.Build();
+
+            // Seed recipes
+            /*using (var scope = app.Services.CreateScope())
+            {
+                var seedRecipes = scope.ServiceProvider.GetRequiredService<SeedRecipes_AddDescToAllRecipes>();
+                await seedRecipes.UpdateRecipeDescriptions(appSettings);
+            } ;*/
 
             // Configure the HTTP request pipeline.
             /*if (app.Environment.IsDevelopment())
