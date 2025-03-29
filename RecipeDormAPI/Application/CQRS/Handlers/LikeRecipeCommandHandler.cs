@@ -9,14 +9,14 @@ using RecipeDormAPI.Infrastructure.Infrastructure.Persistence;
 
 namespace RecipeDormAPI.Application.CQRS.Handlers
 {
-    public class BookmarkRecipeCommandHandler : IRequestHandler<BookmarkRecipeCommand, BaseResponse>
+    public class LikeRecipeCommandHandler : IRequestHandler<LikeRecipeCommand, BaseResponse>
     {
         private readonly DataDbContext _dbContext;
-        private readonly ILogger<BookmarkRecipeCommandHandler> _logger;
+        private readonly ILogger<LikeRecipeCommandHandler> _logger;
         private readonly AppSettings _appSettings;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public BookmarkRecipeCommandHandler(DataDbContext dbContext, ILogger<BookmarkRecipeCommandHandler> logger, IOptions<AppSettings> appSettings, IHttpContextAccessor httpContextAccessor)
+        public LikeRecipeCommandHandler(DataDbContext dbContext, ILogger<LikeRecipeCommandHandler> logger, IOptions<AppSettings> appSettings, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _logger = logger;
@@ -24,7 +24,7 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<BaseResponse> Handle(BookmarkRecipeCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(LikeRecipeCommand request, CancellationToken cancellationToken)
         {
             if (_httpContextAccessor.HttpContext?.Items["UserId"] is not Guid userId)
             {
@@ -36,26 +36,27 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
 
             try
             {
-                var recipeExists = await _dbContext.Likes.AnyAsync(cancellationToken);
+                var recipeExists = await _dbContext.Recipes.AnyAsync(cancellationToken);
 
                 if (!recipeExists)
                 {
+                    _logger.LogError($"User: {userId} does not have a bookmark for recipe: {request.RecipeId}");
                     return new BaseResponse(false, "Recipe not found");
                 }
 
-                var newRecipeBookmark = new Bookmarks
+                var newLike = new Likes
                 {
                     UserId = userId,
-                    RecipeId = request.RecipeId
+                    RecipeId = request.RecipeId,
                 };
 
-                await _dbContext.Bookmarks.AddAsync(newRecipeBookmark, cancellationToken);
+                await _dbContext.Likes.AddAsync(newLike, cancellationToken);
                 await _dbContext.SaveChangesAsync(cancellationToken);
-
+                
                 await transaction.CommitAsync(cancellationToken);
 
-                _logger.LogInformation($"Recipe: {request.RecipeId} has successfully being bookmarked by user: {userId}");
-                return new BaseResponse(true, "Recipe bookmarked successfully!");
+                _logger.LogInformation($"Recipe: {request.RecipeId} has successfully being liked by user: {userId}");
+                return new BaseResponse(true, "Recipe liked successfully!");
             }
             catch (Exception ex)
             {

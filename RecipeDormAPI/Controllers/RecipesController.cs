@@ -170,5 +170,45 @@ namespace RecipeDormAPI.Controllers
                 return StatusCode(500, $"{_appSettings.ProcessingError}");
             }
         }
+
+        [HttpPost("like")]
+        public async Task<IActionResult> LikeRecipe(LikeRecipeCommand request)
+        {
+            try
+            {
+                var modelxfmed = new LikeRecipeCommand { RecipeId = request.RecipeId };
+                var req = JsonConvert.SerializeObject(modelxfmed);
+
+                _logger.LogInformation($"User attempted to like recipe\n{req}");
+                var response = await _mediator.Send(request);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong\n {ex.StackTrace}: {ex.Message}");
+                return StatusCode(500, $"{_appSettings.ProcessingError}");
+            }
+        }
+
+        [HttpDelete("remove-like")]
+        public async Task<IActionResult> RemoveRecipeLike(RemoveRecipeLikeCommand request)
+        {
+            try
+            {
+                var modelxfmed = new LikeRecipeCommand { RecipeId = request.RecipeId };
+                var req = JsonConvert.SerializeObject(modelxfmed);
+
+                _logger.LogInformation($"User attempted to like recipe\n{req}");
+                var response = await _mediator.Send(request);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong\n {ex.StackTrace}: {ex.Message}");
+                return StatusCode(500, $"{_appSettings.ProcessingError}");
+            }
+        }
     }
 }
