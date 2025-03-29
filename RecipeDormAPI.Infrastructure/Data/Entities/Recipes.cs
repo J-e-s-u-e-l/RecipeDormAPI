@@ -10,7 +10,7 @@ namespace RecipeAPI.Infrastructure.Data.Entities
     public class Recipes : BaseEntity
     {
         [ForeignKey(nameof(User))]
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
         public string Title { get; set; }
         public string? ImageUrl { get; set; }
         public string? Description { get; set; }

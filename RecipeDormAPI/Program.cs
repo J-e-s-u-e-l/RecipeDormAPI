@@ -36,7 +36,7 @@ namespace RecipeDormAPI
 
 
             // Seed recipes, load app settings
-            /*var appSettings = builder.Configuration.GetSection("AppSettings").Get<AppSettings>();
+/*            var appSettings = builder.Configuration.GetSection("AppSettings").Get<AppSettings>();
             builder.Services.AddScoped<SeedRecipes_AddDescToAllRecipes>();*/
 
 
@@ -113,12 +113,15 @@ namespace RecipeDormAPI
 
             var app = builder.Build();
 
-            // Seed recipes
+            // Seed recipes (Description Column
             /*using (var scope = app.Services.CreateScope())
             {
                 var seedRecipes = scope.ServiceProvider.GetRequiredService<SeedRecipes_AddDescToAllRecipes>();
                 await seedRecipes.UpdateRecipeDescriptions(appSettings);
-            } ;*/
+            };*/
+
+            // Seed recipes
+            //SeedRecipes.Initialize(app.Services, 100, app.Configuration.GetSection("AppSettings").Get<AppSettings>()).Wait();
 
             // Configure the HTTP request pipeline.
             /*if (app.Environment.IsDevelopment())

@@ -37,7 +37,10 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
                     return new BaseResponse<SearchForRecipeResponse>(false, "User authentication required");
                 }
 
-                // Search Process
+                /* 
+                Search Process: The null check on `userId` ensures that only 
+                developer-seeded recipes (which have no `userId`) are searched, excluding user-added recipes. 
+                */
                 // Input Processing
                 string normalizedQuery = request.SearchQuery.ToLower().Trim();
                 var queryWords = normalizedQuery.Split(' ', StringSplitOptions.RemoveEmptyEntries)
@@ -47,7 +50,7 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
                 // Exact Match Search
                 var allResults = new List<(Recipes Recipe, int Score, string Relevance)>();
                 var exactMatches = await _dbContext.Recipes
-                    .Where(r => r.Title.ToLower() == normalizedQuery)
+                    .Where(r => r.UserId == null && r.Title.ToLower() == normalizedQuery)
                     .ToListAsync();
 
                 foreach (var recipe in exactMatches)
@@ -60,7 +63,7 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
                 {
                     // Approximate Match Search (Title Similarity)
                     var approximateMatches = await _dbContext.Recipes
-                        .Where(r => queryWords.Any(q => r.Title.ToLower().Contains(q)))
+                        .Where(r => r.UserId == null && queryWords.Any(q => r.Title.ToLower().Contains(q)))
                         .ToListAsync();
 
                     foreach(var recipe in approximateMatches)
@@ -76,7 +79,7 @@ namespace RecipeDormAPI.Application.CQRS.Handlers
                     var existingRecipeIds = allResults.Select(r => r.Recipe.Id).ToList();
 
                     var ingredientMatches = await _dbContext.Ingredients
-                        .Where(i => queryWords.Any(q => i.Name.ToLower().Contains(q)))
+                        .Where(i => i.Recipe.UserId == null && queryWords.Any(q => i.Name.ToLower().Contains(q)))
                         .GroupBy(i => i.RecipeId)
                         .Select(g => new
                         {

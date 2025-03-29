@@ -8,13 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace RecipeDormAPI.Infrastructure.Infrastructure.Persistence.Utilities.SeedRecipes
 {
     public class SpoonaCularRecipe
     {
-
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
@@ -23,6 +23,9 @@ namespace RecipeDormAPI.Infrastructure.Infrastructure.Persistence.Utilities.Seed
 
         [JsonPropertyName("image")]
         public string Image { get; set; }
+
+        [JsonPropertyName("summary")] 
+        public string Summary { get; set; }
 
         [JsonPropertyName("extendedIngredients")]
         public List<Ingredient> ExtendedIngredients { get; set; }
@@ -58,6 +61,7 @@ namespace RecipeDormAPI.Infrastructure.Infrastructure.Persistence.Utilities.Seed
         {
             [JsonPropertyName("number")]
             public int Number { get; set; }
+
             [JsonPropertyName("step")]
             public string StepText { get; set; }
         }
@@ -66,15 +70,6 @@ namespace RecipeDormAPI.Infrastructure.Infrastructure.Persistence.Utilities.Seed
     public class SeedRecipes
     {
         static readonly HttpClient client = new HttpClient();
-        /*private readonly AppSettings _appSettings;
-
-        public SeedRecipes(IOptions<AppSettings> appSettings)
-        {
-            _appSettings = appSettings.Value;
-        }*/
-
-        //static readonly string apiKey = "3562fe3dc7f5437f8ef26ab037107bb5";
-        static readonly Guid dummyUserId = Guid.Parse("F15FEAD6-B847-4FA3-F7EE-08DD648C3C24");
 
         public static async Task Initialize(IServiceProvider serviceProvider, int numberOfRecipes, AppSettings appSettings)
         {
@@ -108,13 +103,20 @@ namespace RecipeDormAPI.Infrastructure.Infrastructure.Persistence.Utilities.Seed
                         continue;
                     }
 
-                    // Seed Recipes
+                    // Clean summary (remove HTML tags if present)
+                    string cleanedSummary = apiRecipe.Summary != null
+                        ? Regex.Replace(apiRecipe.Summary, "<.*?>", "")
+                        : "No description available";
+
+                    // Seed Recipes with Description and SpoonacularId
                     var recipe = new Recipes
                     {
                         Id = Guid.NewGuid(),
-                        UserId = dummyUserId,
+                        UserId = null,
                         Title = apiRecipe.Title,
                         ImageUrl = apiRecipe.Image,
+                        Description = cleanedSummary,      
+                        SpoonacularId = apiRecipe.Id,      
                         Ingredients = new List<Ingredients>(),
                         Steps = new List<Steps>()
                     };
@@ -151,7 +153,7 @@ namespace RecipeDormAPI.Infrastructure.Infrastructure.Persistence.Utilities.Seed
                 }
 
                 await _dataDbContext.SaveChangesAsync();
-                Console.WriteLine("Seeding complete");
+                Console.WriteLine($"Seeded {recipes.Count} recipes with descriptions and Spoonacular IDs");
             }
             catch (HttpRequestException ex)
             {
