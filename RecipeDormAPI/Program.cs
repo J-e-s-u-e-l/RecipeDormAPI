@@ -36,7 +36,7 @@ namespace RecipeDormAPI
 
 
             // Seed recipes, load app settings
-/*            var appSettings = builder.Configuration.GetSection("AppSettings").Get<AppSettings>();
+            /*var appSettings = builder.Configuration.GetSection("AppSettings").Get<AppSettings>();
             builder.Services.AddScoped<SeedRecipes_AddDescToAllRecipes>();*/
 
 
@@ -113,7 +113,7 @@ namespace RecipeDormAPI
 
             var app = builder.Build();
 
-            // Seed recipes (Description Column
+            // Seed recipes (Description Column)
             /*using (var scope = app.Services.CreateScope())
             {
                 var seedRecipes = scope.ServiceProvider.GetRequiredService<SeedRecipes_AddDescToAllRecipes>();
@@ -121,7 +121,11 @@ namespace RecipeDormAPI
             };*/
 
             // Seed recipes
-            //SeedRecipes.Initialize(app.Services, 100, app.Configuration.GetSection("AppSettings").Get<AppSettings>()).Wait();
+            //SeedRecipes.Initialize(app.Services, 200, app.Configuration.GetSection("AppSettings").Get<AppSettings>()).Wait();
+
+            // Seed Nigerian dishes
+            //SeedNigerianDishes.Initialize(app.Services);
+
 
             // Configure the HTTP request pipeline.
             /*if (app.Environment.IsDevelopment())
